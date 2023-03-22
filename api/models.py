@@ -13,12 +13,12 @@ class SeccionTest(models.Model):
 
 class Question(models.Model):
     question = models.CharField(max_length=200,verbose_name="Question")
-    distractorOne = models.CharField(max_length=200,verbose_name="Distractor")
-    distractorTwo = models.CharField(max_length=200,verbose_name="Distractor2")
-    distractorThree = models.CharField(max_length=200,verbose_name="Distractor3")
+    distractor1 = models.CharField(max_length=200,verbose_name="Distractor1",default="")
+    distractor2 = models.CharField(max_length=200,verbose_name="Distractor2",default="")
+    distractor3 = models.CharField(max_length=200,verbose_name="Distractor3",default="")
     answer  = models.CharField(max_length=200,verbose_name="respuesta")
     questionario =  models.ForeignKey(SeccionTest,on_delete=models.CASCADE)
-
+    
     def __str__(self) -> str:
         return self.question
     
@@ -45,6 +45,7 @@ class Assigment(models.Model):
 class Answers(models.Model):
     assigment   =models.ForeignKey(Assigment,verbose_name="Asignacion",on_delete=models.CASCADE)
     question  = models.ForeignKey(Question,verbose_name="Questionario",on_delete=models.CASCADE)
+    answer  = models.CharField(max_length=200,verbose_name="respuesta",default="")
     def __str__(self) -> str:
         return self.assigment
 
