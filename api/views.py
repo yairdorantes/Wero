@@ -1,11 +1,26 @@
 # Create your views here.
 from django.views import View
 import json
-from django.http import JsonResponse
-from .models import Question,SeccionTest
+from django.http import JsonResponse,HttpResponse
+from .models import Question,SeccionTest,Usuario
+from django.forms.models import model_to_dict
+
+class LoginView(View):
+    def post(self, request):
+        jd = json.loads(request.body)
+        user = Usuario.objects.filter(email=jd["email"]).first()
+
+        if user:
+            if user.password == jd["password"]:
+                user_dict = model_to_dict(user)
+                return JsonResponse({"user":user_dict})
+            else:
+                return HttpResponse("bad",405)
+        else:
+            return HttpResponse("not found",404)
+
 
 class Questions(View):
- 
     def get(self, request):
         questions = list(Question.objects.values())
         for question in questions:
