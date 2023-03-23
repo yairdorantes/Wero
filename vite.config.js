@@ -6,27 +6,27 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // devOptions: {
-      //   enabled: true,
-      //   type: "module",
-      // },
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
       registerType: "autoUpdate",
       manifest: {
         short_name: "React App",
         name: "Create React App Sample",
         icons: [
           {
-            src: "f.ico",
+            src: "check.png",
             sizes: "64x64 32x32 24x24 16x16",
             type: "image/x-icon",
           },
           {
-            src: "f.png",
+            src: "check.png",
             type: "image/png",
             sizes: "192x192",
           },
           {
-            src: "f.png",
+            src: "check.png",
             type: "image/png",
             sizes: "512x512",
           },
