@@ -1,10 +1,13 @@
 import "./App.css";
+import { AuthProvider } from "./components/context/AuthContext";
 import FIleCSV from "./components/FIleCSV";
 import MyRoute from "./routes/MyRoute";
 function App() {
   return (
     <>
-      <MyRoute></MyRoute>
+      <AuthProvider>
+        <MyRoute></MyRoute>
+      </AuthProvider>
     </>
   );
 }

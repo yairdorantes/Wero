@@ -1,54 +1,63 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { urlAPI } from "./api";
 
 const Test = () => {
   const [questions, setQuestions] = useState([]);
+  const [corrects, setCorrects] = useState(0);
+  const [response, setResponse] = useState([]);
+  const paramsUrl = useParams();
 
-  const shuffleAnswers = (answers) => {
-    const shuffledAnswers = [...answers];
-    for (let i = shuffledAnswers.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledAnswers[i], shuffledAnswers[j]] = [
-        shuffledAnswers[j],
-        shuffledAnswers[i],
-      ];
+  const getResults = () => {
+    for (const i in response) {
+      if (response[i] === "answer") {
+        setCorrects(corrects + 1);
+      }
     }
-    return shuffledAnswers;
+    console.log(corrects);
   };
+
   useEffect(() => {
     axios
-      .get(`${urlAPI}/questions`)
+      .get(`${urlAPI}/questions/${paramsUrl.id}`)
       .then((res) => {
-        console.log(res.data.questions);
+        console.log(res.data);
         setQuestions(res.data.questions);
       })
       .catch((err) => console.log(err));
   }, []);
 
   return (
-    <div className="m-10">
+    <div className="m-10 w-3/4 mx-auto">
       <div>
         {questions.length > 0 ? (
           questions.map((question, i) => (
             <div key={i}>
-              <h1 className="text-2xl">{question.question}</h1>
-              <div className="form-control">
-                {shuffleAnswers([
-                  question.answer,
-                  question.distractors[0],
-                  question.distractors[1],
-                  question.distractors[2],
-                ]).map((answer, j) => (
+              <h1 className="text-2xl bg-neutral p-2 rounded-md m-3">
+                {i + 1}. {question.question}
+              </h1>
+              <div className="form-control w-48 ml-4 ">
+                {question.answers.map((answer, j) => (
                   <div key={j}>
-                    <label className="label cursor-pointer w-48">
-                      <span className="label-text">{answer}</span>
+                    <label className="label cursor-pointer">
                       <input
+                        onChange={(e) =>
+                          setResponse({
+                            ...response,
+                            [question.id]: e.target.value,
+                          })
+                        }
                         type="radio"
+                        value={Object.keys(answer)[0]}
                         name={`radio-${i}`}
                         className="radio checked:bg-red-500"
                       />
+                      <span className="label-text ml-2 bg-gray-600 min-w-full p-2 rounded-md">
+                        {Object.values(answer)[0]}
+                      </span>
                     </label>
+                    {/* {Object.keys(answer)[0]}: {Object.values(answer)[0]} */}
                   </div>
                 ))}
               </div>
@@ -74,6 +83,9 @@ const Test = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className="text-center">
+        <button className="btn w-3/4 text-center">Enviar </button>
       </div>
     </div>
   );

@@ -1,27 +1,21 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { urlAPI } from "./api";
+import AuthContext from "./context/AuthContext";
 
 const Form = () => {
   const [correo, setCorreo] = useState("");
   const [passWord, setPassWord] = useState("");
-
+  const { loginUser } = useContext(AuthContext);
   const sendLogin = () => {
     const data = { email: correo, password: passWord };
-
-    axios
-      .post(`${urlAPI}/login`, data)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    loginUser(data);
   };
 
   return (
     <div>
-      <div className="w-full max-w-xs">
+      <div className="w-full mx-auto mt-24 max-w-xs">
+        <div className="alert">Inicio de sesion de esclavo</div>
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label
