@@ -34,16 +34,16 @@ const FIleCSV = () => {
               getRemoveFileProps,
             }) => (
               <>
-                <div>
+                <div className="text-center mt-24">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-lg mb-5 "
                     {...getRootProps()}
                   >
                     Cargar Archivo
                   </button>
                   {acceptedFile && (
-                    <div className="alert shadow-lg">
+                    <div className="alert shadow-lg mb-3 w-1/2 mx-auto">
                       <div>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -67,9 +67,20 @@ const FIleCSV = () => {
                       </div>
                     </div>
                   )}
-                  <button className="btn btn-error" {...getRemoveFileProps()}>
-                    Remover
-                  </button>
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      className="btn btn-lg btn-success"
+                      onClick={sendCSVFile}
+                    >
+                      Enviar
+                    </button>
+                    <button
+                      className="btn btn-lg btn-error"
+                      {...getRemoveFileProps()}
+                    >
+                      Remover
+                    </button>
+                  </div>
                 </div>
                 {/* <ProgressBar style={styles.progressBarBackgroundColor} /> */}
               </>
@@ -77,9 +88,6 @@ const FIleCSV = () => {
           </CSVReader>
         </div>
       </div>
-      <button className="btn btn-success" onClick={sendCSVFile}>
-        Enviar
-      </button>
     </>
   );
 };

@@ -1,9 +1,12 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { urlAPI } from "../api";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
+
   const [isOpenAuth, setIsOpenAuth] = useState(true);
   let [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
@@ -24,6 +27,7 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data.user);
           console.log(res.data.user);
           localStorage.setItem("user", JSON.stringify(res.data.user));
+          navigate("/profile");
         }
         // setIsOpen(false);
         console.log(res);

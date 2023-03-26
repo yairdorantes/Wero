@@ -3,10 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { urlAPI } from "./api";
 import AuthContext from "./context/AuthContext";
+import Graph from "./Graph";
 
 const Profile = () => {
   const [userData, setUserData] = useState([]);
   const [assigments, setAssigments] = useState([]);
+  const [count, setCount] = useState(0);
   const { user } = useContext(AuthContext);
   const getData = () => {
     axios.get(`${urlAPI}/collaborator/${user.colaborador}`).then((res) => {
@@ -18,8 +20,9 @@ const Profile = () => {
     axios
       .get(`${urlAPI}/ass/${user.id}`)
       .then((res) => {
-        console.log(res.data.results);
         setAssigments(res.data.results);
+
+        // setAssigments(cont);
       })
       .catch((err) => {
         console.log(err);
@@ -29,6 +32,13 @@ const Profile = () => {
     getData();
     getAssignments();
   }, []);
+  useEffect(() => {
+    let cont = 0;
+    assigments.forEach((res) => {
+      if (res.status !== "Calificado") cont++;
+    });
+    setCount(cont);
+  }, [assigments]);
 
   return (
     <div>
@@ -46,7 +56,7 @@ const Profile = () => {
                   {assigments.length > 0 && (
                     <div className="indicator mt-5 mb-5">
                       <span className="indicator-item badge badge-error font-bold">
-                        {assigments.length}
+                        {count}
                       </span>
                       <button className="alert alert-warning font-bold">
                         Cuestionarios pendientes
@@ -88,12 +98,18 @@ const Profile = () => {
         </div>
       </div>
       <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
-        {assigments.map((ass, i) => (
-          <Link key={i} to={`/test/${ass.test_id}`}>
-            <button className="btn">Questionario {i + 1}</button>
-          </Link>
-        ))}
+        {assigments &&
+          assigments.map((ass, i) => {
+            if (ass.status !== "Calificado") {
+              return (
+                <Link key={i} to={`/test/${ass.test__id}`}>
+                  <button className="btn">{ass.test__name}</button>
+                </Link>
+              );
+            }
+          })}
       </div>
+      <Graph results={assigments} />
     </div>
   );
 };

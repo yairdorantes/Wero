@@ -1,32 +1,52 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { urlAPI } from "./api";
+import AuthContext from "./context/AuthContext";
 
 const Test = () => {
-  const [questions, setQuestions] = useState([]);
-  const [corrects, setCorrects] = useState(0);
-  const [response, setResponse] = useState([]);
   const paramsUrl = useParams();
+  const { user } = useContext(AuthContext);
+  const [questions, setQuestions] = useState([]);
+  const [score, setScore] = useState(0);
+  const [status, setStatus] = useState();
+  const [isSent, setIsSent] = useState(false);
+  const [response, setResponse] = useState(() => {
+    const storedUser = localStorage.getItem(`response${paramsUrl.id}`);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   const getResults = () => {
-    for (const i in response) {
-      if (response[i] === "answer") {
-        setCorrects(corrects + 1);
-      }
-    }
-    console.log(corrects);
+    setIsSent(true);
+    let cont = 0,
+      percentage = 0;
+    for (const i in response) if (response[i] === "answer") cont++;
+    percentage = (cont / questions.length) * 100;
+    setScore(percentage);
+    axios
+      .post(`${urlAPI}/ass`, {
+        user: user.id,
+        test: paramsUrl.id,
+        score: percentage,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     axios
-      .get(`${urlAPI}/questions/${paramsUrl.id}`)
+      .get(`${urlAPI}/questions/${paramsUrl.id}/${user.id}`)
       .then((res) => {
-        console.log(res.data);
         setQuestions(res.data.questions);
+        setStatus(res.data.status);
+        console.log(res);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(`response${paramsUrl.id}`, JSON.stringify(response));
+  }, [response]);
 
   return (
     <div className="m-10 w-3/4 mx-auto">
@@ -35,7 +55,7 @@ const Test = () => {
           questions.map((question, i) => (
             <div key={i}>
               <h1 className="text-2xl bg-neutral p-2 rounded-md m-3">
-                {i + 1}. {question.question}
+                <span className="font-bold">{i + 1}.</span> {question.question}
               </h1>
               <div className="form-control w-48 ml-4 ">
                 {question.answers.map((answer, j) => (
@@ -49,6 +69,12 @@ const Test = () => {
                           })
                         }
                         type="radio"
+                        checked={
+                          response &&
+                          response[question.id] === Object.keys(answer)[0]
+                            ? true
+                            : false
+                        }
                         value={Object.keys(answer)[0]}
                         name={`radio-${i}`}
                         className="radio checked:bg-red-500"
@@ -85,7 +111,33 @@ const Test = () => {
         )}
       </div>
       <div className="text-center">
-        <button className="btn w-3/4 text-center">Enviar </button>
+        {isSent || status === "Calificado" ? (
+          <div className="alert shadow-lg">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="stroke-info flex-shrink-0 w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span>
+                Tu calificacion es del
+                <span className="text-blue-100"> {score}%</span>
+              </span>
+            </div>
+          </div>
+        ) : (
+          <button onClick={getResults} className="btn w-3/4 text-center">
+            Enviar{" "}
+          </button>
+        )}
       </div>
     </div>
   );
