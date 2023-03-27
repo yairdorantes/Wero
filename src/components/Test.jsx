@@ -27,7 +27,7 @@ const Test = () => {
       .post(`${urlAPI}/ass`, {
         user: user.id,
         test: paramsUrl.id,
-        score: percentage,
+        score: percentage.toFixed(2),
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -39,6 +39,7 @@ const Test = () => {
       .then((res) => {
         setQuestions(res.data.questions);
         setStatus(res.data.status);
+        if (res.data.status === "Calificado") setScore(res.data.score);
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -134,9 +135,11 @@ const Test = () => {
             </div>
           </div>
         ) : (
-          <button onClick={getResults} className="btn w-3/4 text-center">
-            Enviar{" "}
-          </button>
+          questions.length > 0 && (
+            <button onClick={getResults} className="btn w-3/4 text-center">
+              Enviar{" "}
+            </button>
+          )
         )}
       </div>
     </div>
