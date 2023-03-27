@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse
 from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment
 from django.forms.models import model_to_dict
 import random
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class LoginView(View):
@@ -80,12 +81,15 @@ class Questions(View):
             try:
                 if row[0] != "":
                     sec = row[5]
-                    relation = SeccionTest.objects.get(name=sec)
                     question = row[0]
                     distractor1 = row[1]
                     distractor2 = row[2]
                     distractor3 = row[3]
                     answer = row[4]
+                    try:
+                        relation = SeccionTest.objects.get(name=sec)
+                    except ObjectDoesNotExist:
+                        relation = SeccionTest.objects.create(name=sec)
                     Question.objects.create(
                         questionario=relation,
                         question=question,

@@ -38,14 +38,19 @@ class DataColaboradores(models.Model):
     address = models.CharField(max_length=200, verbose_name="direccion")
     date_login = models.DateField(auto_now=True, verbose_name="Ingreso")
     area = models.CharField(verbose_name="Area", max_length=100)
-    avatar = models.TextField(verbose_name="Avatar", default="")
+    avatar = models.TextField(
+        verbose_name="Avatar",
+        default="https://static.vecteezy.com/system/resources/previews/005/129/844/original/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg",
+    )
 
     def __str__(self) -> str:
         return self.name_colaborador
 
 
 class Usuario(models.Model):
-    colaborador = models.ForeignKey(DataColaboradores, on_delete=models.CASCADE)
+    colaborador = models.ForeignKey(
+        DataColaboradores, on_delete=models.CASCADE, null=True, blank=True
+    )
     email = models.EmailField(default="")
     count_user = models.CharField(verbose_name="cuenta", max_length=200)
     password = models.CharField(verbose_name="Password", max_length=200)
