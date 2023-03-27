@@ -63,7 +63,7 @@ class Assigment(models.Model):
     status = models.CharField(
         verbose_name="Status", default="Sin calificacion", max_length=20
     )
-    score = models.IntegerField(default=0, verbose_name="Porcentaje de calificacion")
+    score = models.FloatField(default=0, verbose_name="Porcentaje de calificacion")
 
     def __str__(self) -> str:
         return self.colaborador.name_colaborador

@@ -69,7 +69,9 @@ class Questions(View):
         random.shuffle(questions)
         # answers = [{str(question["id"]): question["answer"]} for question in questions]
 
-        return JsonResponse({"questions": questions, "status": ass.status})
+        return JsonResponse(
+            {"questions": questions, "status": ass.status, "score": ass.score}
+        )
 
     def post(self, request):
         data = json.loads(request.body)
