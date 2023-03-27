@@ -12,7 +12,9 @@ const Test = () => {
   const [status, setStatus] = useState();
   const [isSent, setIsSent] = useState(false);
   const [response, setResponse] = useState(() => {
-    const storedUser = localStorage.getItem(`response${paramsUrl.id}`);
+    const storedUser = localStorage.getItem(
+      `${user.id}response${paramsUrl.id}`
+    );
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
@@ -46,7 +48,10 @@ const Test = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(`response${paramsUrl.id}`, JSON.stringify(response));
+    localStorage.setItem(
+      `${user.id}response${paramsUrl.id}`,
+      JSON.stringify(response)
+    );
   }, [response]);
 
   return (

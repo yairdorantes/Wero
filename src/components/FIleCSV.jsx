@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useCSVReader } from "react-papaparse";
 import { urlAPI } from "./api";
+import toast, { Toaster } from "react-hot-toast";
 
 const FIleCSV = () => {
   const { CSVReader } = useCSVReader();
@@ -11,15 +12,20 @@ const FIleCSV = () => {
       .post(`${urlAPI}/questions`, data)
       .then((res) => {
         console.log(res.data);
+        if (res.data === 200) {
+          toast.success("Archivo CSV enviado exitosamente");
+        }
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Error al enviar el archivo");
       });
   };
 
   return (
     <>
       <div className="">
+        <Toaster />
         <div className="App">
           <CSVReader
             onUploadAccepted={(results) => {
