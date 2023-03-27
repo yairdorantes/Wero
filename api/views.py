@@ -100,4 +100,4 @@ class Questions(View):
                     )
             except Exception as e:
                 print(e)
-        return JsonResponse({"message": "success"})
+        return HttpResponse(200)
