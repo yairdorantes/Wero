@@ -11,6 +11,12 @@ class SeccionTest(models.Model):
         return self.name
 
 
+class Area(models.Model):
+    name = models.CharField(verbose_name="Area", max_length=100)
+
+    def __str__(self) -> str:
+        return self.name
+    
 class Question(models.Model):
     question = models.CharField(max_length=200, verbose_name="Question")
     distractor1 = models.CharField(
@@ -28,7 +34,6 @@ class Question(models.Model):
     def __str__(self) -> str:
         return self.question
 
-
 class DataColaboradores(models.Model):
     name_colaborador = models.CharField(
         max_length=200, verbose_name="nombre colaborador"
@@ -37,7 +42,7 @@ class DataColaboradores(models.Model):
     phone = models.CharField(max_length=10, verbose_name="Celular")
     address = models.CharField(max_length=200, verbose_name="direccion")
     date_login = models.DateField(auto_now=True, verbose_name="Ingreso")
-    area = models.CharField(verbose_name="Area", max_length=100)
+    area = models.ForeignKey(Area,on_delete=models.CASCADE)
     avatar = models.TextField(
         verbose_name="Avatar",
         default="https://static.vecteezy.com/system/resources/previews/005/129/844/original/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg",
@@ -57,8 +62,9 @@ class Usuario(models.Model):
     profile = models.CharField(verbose_name="Perfil", max_length=200)
     status = models.CharField(verbose_name="Status", max_length=200)
 
-
 class Assigment(models.Model):
+
+    area_to_assign  = models.ManyToManyField(Area,verbose_name="area")
     colaborador = models.ForeignKey(
         DataColaboradores, verbose_name="Colaborador", on_delete=models.CASCADE
     )
@@ -69,9 +75,7 @@ class Assigment(models.Model):
         verbose_name="Status", default="Sin calificacion", max_length=20
     )
     score = models.FloatField(default=0, verbose_name="Porcentaje de calificacion")
-
-    def __str__(self) -> str:
-        return self.colaborador.name_colaborador
+    
 
 
 class Answers(models.Model):

@@ -6,13 +6,12 @@ from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment
 from django.forms.models import model_to_dict
 import random
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db.models import Q
 
 class LoginView(View):
     def post(self, request):
         jd = json.loads(request.body)
         user = Usuario.objects.filter(email=jd["email"]).first()
-
         if user:
             if user.password == jd["password"]:
                 user_dict = model_to_dict(user)
@@ -24,10 +23,11 @@ class LoginView(View):
 
 
 class AssigmentsView(View):
-    def get(self, request, id):
+        
+    def get(self, request, id, area):
         results = list(
-            Assigment.objects.filter(colaborador_id=id).values(
-                "test__name", "status", "score", "test__id"
+            Assigment.objects.filter(Q(colaborador_id=id) | Q(area_to_assign__id=area)).values(
+                "test__name", "status", "score", "test__id","area_to_assign__id"
             )
         )
         return JsonResponse({"results": results})
