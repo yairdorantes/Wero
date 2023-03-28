@@ -21,7 +21,6 @@ const Profile = () => {
       .get(`${urlAPI}/ass/${user.id}`)
       .then((res) => {
         setAssigments(res.data.results);
-
         // setAssigments(cont);
       })
       .catch((err) => {
