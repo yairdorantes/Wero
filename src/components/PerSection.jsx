@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { useState } from "react";
 import { urlAPI } from "./api";
@@ -43,17 +44,24 @@ const PerSection = () => {
   };
 
   const sendData = () => {
-    axios
-      .post(`${urlAPI}/per_section`, {
-        areas: areasSelected,
-        sections: sectionsSelected,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (areasSelected > 0 && sectionsSelected > 0) {
+      axios
+        .post(`${urlAPI}/per_section`, {
+          areas: areasSelected,
+          sections: sectionsSelected,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200)
+            toast.success("Cuestionarios Enviados Exitosamente! ");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Algo salió mal :(");
+        });
+    } else {
+      toast.error("Debe seleccionar al menos un cuestionario y área");
+    }
   };
 
   useEffect(() => {
@@ -62,38 +70,53 @@ const PerSection = () => {
 
   return (
     <div>
+      <Toaster />
       <div className="text-center font-bold mb-3 text-2xl">
         Apply Assigments
       </div>
-      <div>
-        <div className="text-center text-teal-300">Areas</div>
+
+      <div className="text-center">
+        <div className="badge badge-primary badge-lg mb-5  text-teal-300">
+          Areas
+        </div>
         <div className="flex gap-4 justify-center">
           {areas.map((area) => (
-            <div className="">
-              <div className="">{area.name}</div>
+            <div
+              onClick={() => handleChangeAreas(area.id)}
+              className="bg-primary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
+            >
+              <div className="text-white font-bold">{area.name}</div>
               <input
-                onChange={() => handleChangeAreas(area.id)}
+                readOnly
+                checked={areasSelected.includes(area.id) ? true : false}
+                // onChange={() => handleChangeAreas(area.id)}
                 type="checkbox"
-                className="checkbox "
+                className="checkbox text-center"
               />
             </div>
           ))}
         </div>
-        <div className="text-center text-teal-300">Cuestionarios</div>
+        <div className="badge badge-primary badge-lg mb-5 mt-5 text-teal-300">
+          Cuestionarios
+        </div>
         <div className="flex gap-4 justify-center">
           {sections.map((section) => (
-            <div className="">
-              <div className="">{section.name}</div>
+            <div
+              onClick={() => handleChangeSection(section.id)}
+              className="bg-primary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
+            >
+              <div className="text-white font-bold">{section.name}</div>
               <input
                 type="checkbox"
-                // checked={sectionsSelected.includes(section.id) ? true : false}
-                onChange={() => handleChangeSection(section.id)}
+                checked={sectionsSelected.includes(section.id) ? true : false}
+                // onChange={}
+                readOnly
                 className="checkbox"
               />
             </div>
           ))}
         </div>
-        <div className="mx-auto text-center">
+        <div className="mx-auto text-center mt-10">
           <button className="btn btn-success" onClick={() => sendData()}>
             Aceptar
           </button>

@@ -18,7 +18,7 @@ const Form = () => {
         <div className="alert alert-success mb-10">
           Inicio de sesion de esclavo 😀
         </div>
-        <form className="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form className="bg-primary-focus shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label
               className="block text-white text-sm font-bold mb-2"
@@ -52,7 +52,7 @@ const Form = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={sendLogin}
-              className="bg-blue-500 mx-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-accent mx-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
               Ingresar

@@ -38,12 +38,12 @@ const Profile = () => {
     });
     setCount(cont);
   }, [assigments]);
-
+  console.log(userData);
   return (
-    <div>
+    <div className="h-screen bg-neutral-focus ">
       <div className="">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+          <div className="max-w-3xl mx-auto bg-gray-200 rounded-lg shadow-md">
             <div className="px-6 py-4">
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3">
@@ -89,6 +89,12 @@ const Profile = () => {
                       <span className="font-bold text-gray-800">Status:</span>{" "}
                       {userData && userData.status}
                     </li>
+                    <li>
+                      <span className="font-bold text-gray-800">Area:</span>{" "}
+                      <span className="text-red-700 font-bold">
+                        {userData && userData.area_name}
+                      </span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -96,17 +102,40 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
-        {assigments &&
-          assigments.map((ass, i) => {
-            if (ass.status !== "Calificado") {
-              return (
-                <Link key={i} to={`/test/${ass.test__id}`}>
-                  <button className="btn">{ass.test__name}</button>
-                </Link>
-              );
-            }
-          })}
+      {count > 0 && (
+        <div className="text-center mb-5">
+          <div className="badge badge-primary text-center">Questionarios: </div>
+        </div>
+      )}
+      <div className="flex">
+        <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
+          <div>Por contestar: </div>
+          {assigments &&
+            assigments.map((ass, i) => {
+              if (ass.status !== "Calificado") {
+                return (
+                  <Link key={i} to={`/test/${ass.test__id}`}>
+                    <button className="btn btn-accent">{ass.test__name}</button>
+                  </Link>
+                );
+              }
+            })}
+        </div>
+        <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
+          <div>Contestados:</div>
+          {assigments &&
+            assigments.map((ass, i) => {
+              if (ass.status === "Calificado") {
+                return (
+                  <Link key={i} to={`/test/${ass.test__id}`}>
+                    <button className="btn bg-gray-600 text-black btn-disabled">
+                      {ass.test__name}
+                    </button>
+                  </Link>
+                );
+              }
+            })}
+        </div>
       </div>
       <Graph results={assigments} />
     </div>

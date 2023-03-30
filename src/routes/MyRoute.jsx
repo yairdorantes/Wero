@@ -6,16 +6,19 @@ import PerSection from "../components/PerSection";
 import Profile from "../components/Profile";
 import Test from "../components/Test";
 import Welcome from "../components/Welcome";
+import PrivateRoutes from "./PrivateRoutes";
 
 const MyRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<Welcome />} />
-      <Route path="/test/:id" element={<Test />} />
-      <Route path="/file" element={<FIleCSV />} />
       <Route path="/form" element={<Form />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/per_section" element={<PerSection />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/test/:id" element={<Test />} />
+        <Route path="/file" element={<FIleCSV />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/per_section" element={<PerSection />} />
+      </Route>
     </Routes>
   );
 };

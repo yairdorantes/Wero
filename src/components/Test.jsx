@@ -24,7 +24,7 @@ const Test = () => {
       percentage = 0;
     for (const i in response) if (response[i] === "answer") cont++;
     percentage = (cont / questions.length) * 100;
-    setScore(percentage);
+    setScore(percentage.toFixed(2));
     axios
       .post(`${urlAPI}/ass`, {
         user: user.id,
