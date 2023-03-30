@@ -16,7 +16,8 @@ class Area(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
+
 class Question(models.Model):
     question = models.CharField(max_length=200, verbose_name="Question")
     distractor1 = models.CharField(
@@ -34,6 +35,7 @@ class Question(models.Model):
     def __str__(self) -> str:
         return self.question
 
+
 class DataColaboradores(models.Model):
     name_colaborador = models.CharField(
         max_length=200, verbose_name="nombre colaborador"
@@ -42,14 +44,14 @@ class DataColaboradores(models.Model):
     phone = models.CharField(max_length=10, verbose_name="Celular")
     address = models.CharField(max_length=200, verbose_name="direccion")
     date_login = models.DateField(auto_now=True, verbose_name="Ingreso")
-    area = models.ForeignKey(Area,on_delete=models.CASCADE)
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
     avatar = models.TextField(
         verbose_name="Avatar",
         default="https://static.vecteezy.com/system/resources/previews/005/129/844/original/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg",
     )
 
     def __str__(self) -> str:
-        return self.name_colaborador
+        return f"{self.name_colaborador} ({self.area.name})"  # include area name in the string representation
 
 
 class Usuario(models.Model):
@@ -62,9 +64,35 @@ class Usuario(models.Model):
     profile = models.CharField(verbose_name="Perfil", max_length=200)
     status = models.CharField(verbose_name="Status", max_length=200)
 
-class Assigment(models.Model):
 
-    area_to_assign  = models.ManyToManyField(Area,verbose_name="area")
+class AssignmentPerSection(models.Model):
+    area_to_assign = models.ManyToManyField(Area, verbose_name="area")
+    tests_to_assign = models.ManyToManyField(SeccionTest, verbose_name="cuestionario")
+
+    # def create_assignments(self):
+    #     for area in self.area_to_assign.all():
+    #         for colaborador in DataColaboradores.objects.filter(area=area):
+    #             for test in self.tests_to_assign.all():
+    #                 Assigment.objects.create(
+    #                     colaborador=colaborador, test=test, status="nek", score=7.7
+    #                 )
+
+    # def save(self, *args, **kwargs):
+    #     is_created = not bool(self.pk)
+    #     if is_created:
+    #         print("Object is created****************")
+    #         self.create_assignments()
+
+    #     else:
+    #         print("Object is updated")
+    #     super().save(*args, **kwargs)
+
+    # Create assignments for every DataColaborador that belongs to the selected areas
+
+    # ass.save()
+
+
+class Assigment(models.Model):
     colaborador = models.ForeignKey(
         DataColaboradores, verbose_name="Colaborador", on_delete=models.CASCADE
     )
@@ -75,7 +103,9 @@ class Assigment(models.Model):
         verbose_name="Status", default="Sin calificacion", max_length=20
     )
     score = models.FloatField(default=0, verbose_name="Porcentaje de calificacion")
-    
+
+    def __str__(self) -> str:
+        return self.colaborador.name_colaborador
 
 
 class Answers(models.Model):

@@ -2,11 +2,12 @@
 from django.views import View
 import json
 from django.http import JsonResponse, HttpResponse
-from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment
+from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment, Area
 from django.forms.models import model_to_dict
 import random
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+
 
 class LoginView(View):
     def post(self, request):
@@ -15,6 +16,7 @@ class LoginView(View):
         if user:
             if user.password == jd["password"]:
                 user_dict = model_to_dict(user)
+                print(user_dict)
                 return JsonResponse({"user": user_dict})
             else:
                 return HttpResponse("bad", 405)
@@ -22,12 +24,29 @@ class LoginView(View):
             return HttpResponse("not found", 404)
 
 
+class PerSection(View):
+    def get(self, request):
+        sections = list(SeccionTest.objects.values())
+        areas = list(Area.objects.values())
+        return JsonResponse({"sections": sections, "areas": areas})
+
+    def post(self, request):
+        jd = json.loads(request.body)
+        for area in jd["areas"]:
+            area_obj = Area.objects.get(id=area)
+            for section in jd["sections"]:
+                section_obj = SeccionTest.objects.get(id=section)
+                for colaborador in DataColaboradores.objects.filter(area=area_obj):
+                    Assigment.objects.create(test=section_obj, colaborador=colaborador)
+        return HttpResponse(status=200)
+
+
 class AssigmentsView(View):
-        
-    def get(self, request, id, area):
+    def get(self, request, id):
+        # print(id)
         results = list(
-            Assigment.objects.filter(Q(colaborador_id=id) | Q(area_to_assign__id=area)).values(
-                "test__name", "status", "score", "test__id","area_to_assign__id"
+            Assigment.objects.filter(colaborador_id=id).values(
+                "test__name", "status", "score", "test__id"
             )
         )
         return JsonResponse({"results": results})
@@ -47,9 +66,11 @@ class AssigmentsView(View):
 class UserInfo(View):
     def get(self, request, id):
         collaborator = DataColaboradores.objects.filter(id=id).first()
-        collaborator = model_to_dict(collaborator)
+        collaborator_dict = model_to_dict(collaborator)
+        area_name = collaborator.area.name if collaborator.area else None
+        collaborator_dict["area_name"] = area_name
 
-        return JsonResponse({"collaborator": collaborator})
+        return JsonResponse({"collaborator": collaborator_dict})
 
 
 class Questions(View):
