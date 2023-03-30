@@ -64,7 +64,6 @@ class Usuario(models.Model):
 
 class Assigment(models.Model):
 
-    area_to_assign  = models.ManyToManyField(Area,verbose_name="area")
     colaborador = models.ForeignKey(
         DataColaboradores, verbose_name="Colaborador", on_delete=models.CASCADE
     )
@@ -72,11 +71,10 @@ class Assigment(models.Model):
         SeccionTest, verbose_name="cuestionario", on_delete=models.CASCADE
     )
     status = models.CharField(
-        verbose_name="Status", default="Sin calificacion", max_length=20
+        verbose_name="Status", default="Sin calificacion", max_length=20,blank=True
     )
-    score = models.FloatField(default=0, verbose_name="Porcentaje de calificacion")
+    score = models.FloatField(default=0, verbose_name="Porcentaje de calificacion",blank=True)
     
-
 
 class Answers(models.Model):
     assigment = models.ForeignKey(

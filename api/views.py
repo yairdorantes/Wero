@@ -2,7 +2,7 @@
 from django.views import View
 import json
 from django.http import JsonResponse, HttpResponse
-from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment
+from .models import Question, SeccionTest, Usuario, DataColaboradores, Assigment,Area
 from django.forms.models import model_to_dict
 import random
 from django.core.exceptions import ObjectDoesNotExist
@@ -22,15 +22,33 @@ class LoginView(View):
             return HttpResponse("not found", 404)
 
 
+class PerSection(View):
+    def get(self, request):
+        sections = list(SeccionTest.objects.values())
+        areas = list(Area.objects.values())
+        return JsonResponse({"sections": sections, "areas": areas})
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        for area in jd["areas"]:
+            area_obj = Area.objects.get(id=area)
+            for section in jd["sections"]:
+                section_obj = SeccionTest.objects.get(id=section)
+                for colaborador in DataColaboradores.objects.filter(area=area_obj):
+                        Assigment.objects.create( test=section_obj, colaborador=colaborador)
+        return HttpResponse(status=200)
+
 class AssigmentsView(View):
         
-    def get(self, request, id, area):
+    def get(self, request, id):
+        print(id)
         results = list(
-            Assigment.objects.filter(Q(colaborador_id=id) | Q(area_to_assign__id=area)).values(
-                "test__name", "status", "score", "test__id","area_to_assign__id"
+            Assigment.objects.filter(colaborador_id=id).values(
+                "test__name", "status", "score", "test__id"
             )
         )
-        return JsonResponse({"results": results})
+        others = list(Assigment.objects.values())
+        return JsonResponse({"results": results,"other":others})
 
     def post(self, request):
         jd = json.loads(request.body)
@@ -56,7 +74,7 @@ class Questions(View):
     def get(self, request, id, user_id):
         questions = list(Question.objects.filter(questionario=id).values())
         ass = Assigment.objects.filter(test_id=id, colaborador_id=user_id).first()
-
+        print(ass)
         for question in questions:
             answers = [
                 {"answer": question.pop("answer")},
@@ -66,7 +84,7 @@ class Questions(View):
             ]
             random.shuffle(answers)
             question["answers"] = answers
-        print(ass.status)
+        # print(ass.status)
         random.shuffle(questions)
         # answers = [{str(question["id"]): question["answer"]} for question in questions]
 
