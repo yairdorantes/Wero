@@ -18,10 +18,10 @@ const Profile = () => {
 
   const getAssignments = () => {
     axios
-      .get(`${urlAPI}/ass/${user.id}`)
+      .get(`${urlAPI}/ass/${user.colaborador}`)
       .then((res) => {
         setAssigments(res.data.results);
-        // setAssigments(cont);
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
