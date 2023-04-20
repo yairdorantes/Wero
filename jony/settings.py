@@ -27,7 +27,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://weropvto-production.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = ["https://jony-production.up.railway.ap"]
 SITE_URL = "https://jony-production.up.railway.app"
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -82,9 +82,9 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "railway",
         "USER": "postgres",
-        "PASSWORD": "zyaZxs1DbkdwIWOPODED",
-        "HOST": "containers-us-west-117.railway.app",
-        "PORT": "7520",
+        "PASSWORD": "F799vOZDPrCPTAcGaEeP",
+        "HOST": "containers-us-west-48.railway.app",
+        "PORT": "6686",
     }
 }
 
@@ -96,16 +96,6 @@ DATABASES = {
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER':'postgres',
-#         'PASSWORD':'THTpWL5rep3y8D4UODNV',
-#         'HOST':'containers-us-west-193.railway.app',
-#         'PORT':'5479',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
