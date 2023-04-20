@@ -27,7 +27,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://jony-production.up.railway.ap"]
+CSRF_TRUSTED_ORIGINS = ["https://wero-production.up.railway.app/"]
 SITE_URL = "https://jony-production.up.railway.app"
 
 CORS_ORIGIN_ALLOW_ALL = True
