@@ -85,10 +85,10 @@ const Profile = () => {
                       </span>{" "}
                       {userData && userData.address}
                     </li>
-                    <li>
+                    {/* <li>
                       <span className="font-bold text-gray-800">Status:</span>{" "}
                       {userData && userData.status}
-                    </li>
+                    </li> */}
                     <li>
                       <span className="font-bold text-gray-800">Area:</span>{" "}
                       <span className="text-red-700 font-bold">
