@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data.user);
           console.log(res.data.user);
           localStorage.setItem("user", JSON.stringify(res.data.user));
-          navigate("/profile");
+          navigate("/");
         }
         // setIsOpen(false);
         console.log(res);

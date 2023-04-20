@@ -70,6 +70,28 @@ const Profile = () => {
                   <p className="text-gray-700 text-lg mb-4">
                     Esclavo no. {userData && userData.id}
                   </p>
+                  <div className="text-black font-bold">
+                    {userData && userData.profile}
+                  </div>
+                  {userData && userData.profile === "admin" && (
+                    <div className="flex flex-wrap gap-2">
+                      <Link to={"/file"}>
+                        <button className="btn btn-sm btn-info">
+                          agregar csv{" "}
+                        </button>
+                      </Link>
+                      <Link to="https://wero-production.up.railway.app/admin/api/assigment/add/">
+                        <button className="btn btn-sm btn-accent">
+                          agregar asignacion{" "}
+                        </button>
+                      </Link>
+                      <Link to={"/per_section"}>
+                        <button className="btn btn-sm btn-secondary">
+                          agregar asignaciones{" "}
+                        </button>
+                      </Link>
+                    </div>
+                  )}
                   <ul className="flex flex-col text-gray-600 space-y-2">
                     <li>
                       <span className="font-bold text-gray-800">Email:</span>{" "}
