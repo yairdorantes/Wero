@@ -64,6 +64,9 @@ class Usuario(models.Model):
     profile = models.CharField(verbose_name="Perfil", max_length=200)
     status = models.CharField(verbose_name="Status", max_length=200)
 
+    def __str__(self) -> str:
+        return self.email
+
 
 class AssignmentPerSection(models.Model):
     area_to_assign = models.ManyToManyField(Area, verbose_name="area")
@@ -90,6 +93,8 @@ class AssignmentPerSection(models.Model):
     # Create assignments for every DataColaborador that belongs to the selected areas
 
     # ass.save()
+    # def __str__(self) -> str:
+    #     return self.question
 
 
 class Assigment(models.Model):

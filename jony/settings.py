@@ -27,7 +27,10 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://wero-production.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://wero-production.up.railway.app",
+    "http://127.0.0.1:5174/",
+]
 SITE_URL = "https://wero-production.up.railway.app"
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -35,6 +38,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -44,6 +48,9 @@ INSTALLED_APPS = [
     "api",
     "corsheaders",
 ]
+JAZZMIN_UI_TWEAKS = {
+    "theme": "sketchy",
+}
 
 
 MIDDLEWARE = [
