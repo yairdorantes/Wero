@@ -44,7 +44,8 @@ const PerSection = () => {
   };
 
   const sendData = () => {
-    if (areasSelected > 0 && sectionsSelected > 0) {
+    // console.log(areasSelected.length, sectionsSelected.length);
+    if (areasSelected.length > 0 && sectionsSelected.length > 0) {
       axios
         .post(`${urlAPI}/per_section`, {
           areas: areasSelected,

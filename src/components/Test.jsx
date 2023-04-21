@@ -11,6 +11,8 @@ const Test = () => {
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState();
   const [isSent, setIsSent] = useState(false);
+  // console.log(questions);
+  // console.log(user);
   const [response, setResponse] = useState(() => {
     const storedUser = localStorage.getItem(
       `${user.id}response${paramsUrl.id}`
@@ -27,7 +29,7 @@ const Test = () => {
     setScore(percentage.toFixed(2));
     axios
       .post(`${urlAPI}/ass`, {
-        user: user.id,
+        user: user.colaborador,
         test: paramsUrl.id,
         score: percentage.toFixed(2),
       })
@@ -37,7 +39,7 @@ const Test = () => {
 
   useEffect(() => {
     axios
-      .get(`${urlAPI}/questions/${paramsUrl.id}/${user.id}`)
+      .get(`${urlAPI}/questions/${paramsUrl.id}/${user.colaborador}`)
       .then((res) => {
         setQuestions(res.data.questions);
         setStatus(res.data.status);
