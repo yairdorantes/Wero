@@ -77,7 +77,7 @@ class Questions(View):
     def get(self, request, id, user_id):
         questions = list(Question.objects.filter(questionario=id).values())
         ass = Assigment.objects.filter(test_id=id, colaborador_id=user_id).first()
-
+        # print("*****", user_id, "**********")
         for question in questions:
             answers = [
                 {"answer": question.pop("answer")},
@@ -87,10 +87,10 @@ class Questions(View):
             ]
             random.shuffle(answers)
             question["answers"] = answers
-        print(ass.status)
+        # print(ass.status)
         random.shuffle(questions)
         # answers = [{str(question["id"]): question["answer"]} for question in questions]
-
+        # print("**********", ass)
         return JsonResponse(
             {"questions": questions, "status": ass.status, "score": ass.score}
         )
