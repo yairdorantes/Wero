@@ -9,7 +9,7 @@ const Profile = () => {
   const [userData, setUserData] = useState([]);
   const [assigments, setAssigments] = useState([]);
   const [count, setCount] = useState(0);
-  const { user } = useContext(AuthContext);
+  const { user, logoutUser } = useContext(AuthContext);
   const getData = () => {
     axios.get(`${urlAPI}/collaborator/${user.colaborador}`).then((res) => {
       setUserData({ ...user, ...res.data.collaborator });
@@ -121,6 +121,24 @@ const Profile = () => {
                       <span className="text-red-700 font-bold">
                         {userData && userData.area_name}
                       </span>
+                    </li>
+                    <li>
+                      <button
+                        onClick={logoutUser}
+                        className="btn btn-error btn-sm"
+                      >
+                        Salir
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6 ml-3"
+                          fill="currentColor"
+                          height="1em"
+                          width="1em"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a9.985 9.985 0 018 4h-2.71a8 8 0 10.001 12h2.71A9.985 9.985 0 0112 22zm7-6v-3h-8v-2h8V8l5 4-5 4z" />
+                        </svg>
+                      </button>
                     </li>
                   </ul>
                 </div>
