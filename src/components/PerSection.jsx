@@ -84,15 +84,16 @@ const PerSection = () => {
           {areas.map((area) => (
             <div
               onClick={() => handleChangeAreas(area.id)}
-              className="bg-secondary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
+              className="bg-secondary  p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
             >
               <div className="text-white font-bold">{area.name}</div>
               <input
                 readOnly
+                // data-theme=""
                 checked={areasSelected.includes(area.id) ? true : false}
                 // onChange={() => handleChangeAreas(area.id)}
                 type="checkbox"
-                className="checkbox text-center"
+                className="checkbox text-center rounded-full"
               />
             </div>
           ))}
@@ -112,7 +113,7 @@ const PerSection = () => {
                 checked={sectionsSelected.includes(section.id) ? true : false}
                 // onChange={}
                 readOnly
-                className="checkbox"
+                className="checkbox rounded-full"
               />
             </div>
           ))}

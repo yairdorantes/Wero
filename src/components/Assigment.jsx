@@ -63,7 +63,7 @@ const Assigment = () => {
   }, []);
 
   return (
-    <div>
+    <div className="">
       <Toaster />
       <select
         id="large"
@@ -77,17 +77,20 @@ const Assigment = () => {
           </option>
         ))}
       </select>
-      <div className="overflow-x-auto w-full">
-        <table className="table w-full text-center">
+      <div className="overflow-x-auto w-full lg:w-1/2 mx-auto">
+        <table
+          data-theme="luxury"
+          className="table table-zebra  w-full text-center border-2 border-gray-700"
+        >
           <thead>
             <tr>
               <th>
                 <label>
                   <input
                     type="checkbox"
-                    className="checkbox"
-                    checked={colabsSelected.length > 0 ? true : false}
                     onChange={(e) => addAllColabs(e)}
+                    className="checkbox rounded-full"
+                    checked={colabsSelected.length > 0 ? true : false}
                   />
                 </label>
               </th>
@@ -98,26 +101,30 @@ const Assigment = () => {
           <tbody>
             {colabs &&
               colabs.map((colab, key) => (
-                <tr key={key}>
+                <tr key={key} onClick={() => toogleColab(colab.id)}>
                   <th>
                     <label>
                       <input
                         type="checkbox"
-                        className="checkbox"
+                        className="checkbox rounded-full"
                         checked={
                           colabsSelected.indexOf(colab.id) !== -1 ? true : false
                         }
-                        onChange={() => toogleColab(colab.id)}
+                        readOnly
                       />
                     </label>
                   </th>
                   <td>
-                    <div className="font-bold">{colab.name_colaborador}</div>
-                    <div className="text-sm opacity-50">ID: {colab.id}</div>
+                    <div className="font-bold text-success">
+                      {colab.name_colaborador}
+                    </div>
+                    <div className="text-sm text-accent-content opacity-50">
+                      ID: {colab.id}
+                    </div>
                   </td>
                   <td>
                     <img
-                      className="avatar mask mask-squircle w-16 h-16"
+                      className="avatar mask mask-squircle  w-16"
                       src={colab.avatar}
                       alt=""
                     />
@@ -127,7 +134,10 @@ const Assigment = () => {
           </tbody>
         </table>
         <div className="text-center">
-          <button onClick={sendData} className="btn btn-success mt-20">
+          <button
+            onClick={sendData}
+            className="btn w-1/2  btn-lg btn-success mt-20"
+          >
             Enviar Formularios
           </button>
         </div>

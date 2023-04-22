@@ -21,7 +21,7 @@ const Form = () => {
         backgroundImage: `linear-gradient(rgba(4, 4, 4, 0.696), rgba(12, 12, 12, 0.77)), url(${bg})`,
       }}
     >
-      <div className="w-full mx-auto pt-32 max-w-xs">
+      <div className="w-full  mx-auto pt-32 max-w-xs">
         <div
           id="toast-message-cta"
           class="w-full mb-4 max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400"
