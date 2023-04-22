@@ -12,8 +12,8 @@ export default defineConfig({
       // },
       registerType: "autoUpdate",
       manifest: {
-        short_name: "React App",
-        name: "Create React App Sample",
+        short_name: "Yair's System ",
+        name: "Yair's System",
         icons: [
           {
             src: "check.png",
