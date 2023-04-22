@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import Questions, LoginView, UserInfo, AssigmentsView, PerSection
+from .views import (
+    Questions,
+    LoginView,
+    UserInfo,
+    AssigmentsView,
+    PerSection,
+    SetAssigment,
+)
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
@@ -15,4 +22,5 @@ urlpatterns = [
     path("ass/<int:id>/<int:area>", csrf_exempt(AssigmentsView.as_view()), name="ass"),
     path("ass", csrf_exempt(AssigmentsView.as_view()), name="ass"),
     path("per_section", csrf_exempt(PerSection.as_view()), name="per_section"),
+    path("assigment", csrf_exempt(SetAssigment.as_view()), name="assigment"),
 ]

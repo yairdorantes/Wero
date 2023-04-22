@@ -16,7 +16,7 @@ class LoginView(View):
         if user:
             if user.password == jd["password"]:
                 user_dict = model_to_dict(user)
-                print(user_dict)
+                # print(user_dict)
                 return JsonResponse({"user": user_dict})
             else:
                 return HttpResponse("bad", 405)
@@ -37,7 +37,32 @@ class PerSection(View):
             for section in jd["sections"]:
                 section_obj = SeccionTest.objects.get(id=section)
                 for colaborador in DataColaboradores.objects.filter(area=area_obj):
-                    Assigment.objects.create(test=section_obj, colaborador=colaborador)
+                    # print(section_obj.id)
+                    exists = Assigment.objects.filter(
+                        colaborador_id=colaborador.id, test_id=section_obj.id
+                    ).exists()
+                    if not exists:
+                        Assigment.objects.create(
+                            test=section_obj, colaborador=colaborador
+                        )
+        return HttpResponse(status=200)
+
+
+class SetAssigment(View):
+    def get(self, request):
+        colabs = list(DataColaboradores.objects.values())
+        forms = list(SeccionTest.objects.values())
+        return JsonResponse({"colabs": colabs, "forms": forms})
+
+    def post(self, request):
+        jd = json.loads(request.body)
+        colabs = jd["colabs"]
+        for colab in colabs:
+            exists = Assigment.objects.filter(
+                colaborador_id=colab, test_id=jd["test"]
+            ).exists()
+            if not exists:
+                Assigment.objects.create(colaborador_id=colab, test_id=jd["test"])
         return HttpResponse(status=200)
 
 
