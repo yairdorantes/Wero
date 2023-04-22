@@ -87,7 +87,7 @@ const Graph = ({ results }) => {
     ],
   };
   return (
-    <div style={{ width: "50%", height: "500px" }} className="mx-auto mb-10">
+    <div className="mx-auto pb-10  w-full lg:w-2/5 md:w-1/2 sm:w-1/4">
       <div className="text-3xl font-bold text-center m-10">
         Gráfica de tu desempeño
       </div>

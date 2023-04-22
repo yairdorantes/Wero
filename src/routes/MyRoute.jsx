@@ -7,6 +7,7 @@ import Profile from "../components/Profile";
 import Test from "../components/Test";
 // import Welcome from "../components/Welcome";
 import PrivateRoutes from "./PrivateRoutes";
+import Assigment from "../components/Assigment";
 
 const MyRoute = () => {
   return (
@@ -18,6 +19,7 @@ const MyRoute = () => {
         <Route path="/file" element={<FIleCSV />} />
         <Route path="/" element={<Profile />} />
         <Route path="/per_section" element={<PerSection />} />
+        <Route path="/assigment" element={<Assigment />} />
       </Route>
     </Routes>
   );

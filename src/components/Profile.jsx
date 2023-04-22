@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { urlAPI } from "./api";
 import AuthContext from "./context/AuthContext";
 import Graph from "./Graph";
-
+import bg from "../media/bg2.jpg";
 const Profile = () => {
   const [userData, setUserData] = useState([]);
   const [assigments, setAssigments] = useState([]);
@@ -40,10 +40,15 @@ const Profile = () => {
   }, [assigments]);
   console.log(userData);
   return (
-    <div className="h-screen bg-neutral-focus ">
+    <div
+      className="min-h-screen bg-cover bg-center"
+      style={{
+        backgroundImage: `linear-gradient(rgba(4, 4, 4, 0.696), rgba(12, 12, 12, 0.77)), url(${bg})`,
+      }}
+    >
       <div className="">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="max-w-3xl mx-auto bg-gray-200 rounded-lg shadow-md">
+          <div className="max-w-3xl mx-auto bg-gray-300 rounded-lg shadow-md">
             <div className="px-6 py-4">
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3">
@@ -57,20 +62,20 @@ const Profile = () => {
                       <span className="indicator-item badge badge-error font-bold">
                         {count}
                       </span>
-                      <button className="alert alert-warning font-bold">
+                      <button className="alert alert-info font-bold">
                         Cuestionarios pendientes
                       </button>
                     </div>
                   )}
                 </div>
                 <div className="md:w-2/3  md:pl-6">
-                  <h1 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h1 className="text-2xl font-bold text-gray-800 ">
                     {userData && userData.name_colaborador}
                   </h1>
-                  <p className="text-gray-700 text-lg mb-4">
+                  <p className="text-gray-700 text-lg mb-2">
                     Esclavo no. {userData && userData.id}
                   </p>
-                  <div className="text-black font-bold">
+                  <div className="text-primary-content font-bold badge mb-2 p-4 badge-primary ">
                     {userData && userData.profile}
                   </div>
                   {userData && userData.profile === "admin" && (
@@ -80,7 +85,7 @@ const Profile = () => {
                           agregar csv{" "}
                         </button>
                       </Link>
-                      <Link to="https://wero-production.up.railway.app/admin/api/assigment/add/">
+                      <Link to="/assigment">
                         <button className="btn btn-sm btn-accent">
                           agregar asignacion{" "}
                         </button>
@@ -126,12 +131,14 @@ const Profile = () => {
       </div>
       {count > 0 && (
         <div className="text-center mb-5">
-          <div className="badge badge-primary text-center">Questionarios: </div>
+          <div className="badge badge-primary text-center p-5 font-bold">
+            Questionarios:{" "}
+          </div>
         </div>
       )}
       <div className="flex">
         <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
-          <div>Por contestar: </div>
+          <div className="badge p-5 badge-primary font-bold">Pendientes: </div>
           {assigments &&
             assigments.map((ass, i) => {
               if (ass.status !== "Calificado") {
@@ -144,7 +151,7 @@ const Profile = () => {
             })}
         </div>
         <div className="flex mx-auto justify-center gap-4 w-3/4 flex-wrap">
-          <div>Contestados:</div>
+          <div className="badge p-5 badge-primary font-bold">Calificados:</div>
           {assigments &&
             assigments.map((ass, i) => {
               if (ass.status === "Calificado") {

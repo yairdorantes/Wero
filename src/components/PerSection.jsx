@@ -44,7 +44,7 @@ const PerSection = () => {
   };
 
   const sendData = () => {
-    // console.log(areasSelected > 0, sectionsSelected > 0);
+    // console.log(areasSelected, sectionsSelected);
     if (areasSelected.length > 0 && sectionsSelected.length > 0) {
       axios
         .post(`${urlAPI}/per_section`, {
@@ -77,14 +77,14 @@ const PerSection = () => {
       </div>
 
       <div className="text-center">
-        <div className="badge badge-primary badge-lg mb-5  text-teal-300">
+        <div className="badge badge-secondary badge-lg mb-5 font-bold  text-teal-300">
           Areas
         </div>
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4  flex-wrap justify-center">
           {areas.map((area) => (
             <div
               onClick={() => handleChangeAreas(area.id)}
-              className="bg-primary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
+              className="bg-secondary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
             >
               <div className="text-white font-bold">{area.name}</div>
               <input
@@ -97,14 +97,14 @@ const PerSection = () => {
             </div>
           ))}
         </div>
-        <div className="badge badge-primary badge-lg mb-5 mt-5 text-teal-300">
+        <div className="badge badge-info badge-lg font-bold mb-5 mt-5 text-teal-300">
           Cuestionarios
         </div>
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-wrap gap-4 justify-center">
           {sections.map((section) => (
             <div
               onClick={() => handleChangeSection(section.id)}
-              className="bg-primary p-2 px-4 rounded-sm flex items-center justify-center flex-col gap-1"
+              className="bg-info p-2 px-4 rounded-sm flex  items-center justify-center flex-col gap-1"
             >
               <div className="text-white font-bold">{section.name}</div>
               <input
